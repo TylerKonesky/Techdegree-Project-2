@@ -11,6 +11,8 @@ FSJS project 2 - List Filter and Pagination
 const itemsPerPage = 10;
 const studentList = document.querySelector('ul');
 const student = studentList.children;
+// const newStudent = student.sort((a,b)=>(student[a].innerText > student[b].innerText) ? 1 : -1)
+// console.log(newStudent)
 
 //pages is used to create the number of pages needed
 // based on the number of "students" pulled from above. 
@@ -54,9 +56,8 @@ function appendPageLinks(){
 // selects the primary Div in the HTML which is the .page
 // and all it's elements. 
    const page = document.body.querySelector('.page');
-
-//creates a new div element
    const pagination = document.createElement('div');
+   const ul = document.createElement('ul');
 
 //add class name "pagination" (named based on the css files)
    pagination.className = 'pagination';
@@ -64,20 +65,14 @@ function appendPageLinks(){
 //add the new div inside of the parent div (.page class)
    page.appendChild(pagination);
 
-//create an new UL to house the buttons
-   const ul = document.createElement('ul');
-
 //add the UL to the div
    pagination.append(ul)
-   
+
 //created the below loop to create and set list items
 // based on the number of pages needed from the pages variable
 // above.
    for (let i = 1; i <= pages; i++){
-//creates the a tag for the link.
       let link = document.createElement('a');
-
-// creates the list iteam for each button and a tag. 
       const li = document.createElement('li');
 
 //creates a default classname of "active" which will be changed
