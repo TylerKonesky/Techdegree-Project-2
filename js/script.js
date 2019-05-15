@@ -11,7 +11,7 @@ FSJS project 2 - List Filter and Pagination
 const itemsPerPage = 10;
 const studentList = document.querySelector('ul');
 const student = studentList.children;
-let searchCounter = 0
+let searchCounter = 0;
 // const newStudent = student.sort((a,b)=>(student[a].innerText > student[b].innerText) ? 1 : -1)
 // console.log(newStudent)
 
@@ -46,13 +46,14 @@ searchDiv.appendChild(addDiv);
 
 
 // created an easy way to "cancel" the search, 
-// but it really just refreshes the page. 
+// but it really just refreshes the page to its 
+// original state. 
 cancel.addEventListener('click', ()=>{
    location.reload();
 })
+
 //created the display for the search results
 // that are entered through the input box. 
-
 button.addEventListener('click', ()=>{
    var searchQuery = input.value.toLowerCase();
    for(let i = 0; i < student.length; i++){      
@@ -63,7 +64,9 @@ button.addEventListener('click', ()=>{
          searchCounter += 1;
       }
    }
+
 // added functionality for when the search yields no results
+// by checking the counter which is set in the above function.
    if(searchCounter == student.length){
       noResults.innerHTML = '<h2>No Results Found</h2>'
       noResults.appendChild(cancel); 
@@ -172,8 +175,7 @@ function appendPageLinks(){
          showPage(i)
       })
    }
-}
-
+};
 
 appendPageLinks();
 showPage(1);
