@@ -11,6 +11,7 @@ FSJS project 2 - List Filter and Pagination
 const itemsPerPage = 10;
 const studentList = document.querySelector('ul');
 const student = studentList.children;
+let searchCounter = 0
 // const newStudent = student.sort((a,b)=>(student[a].innerText > student[b].innerText) ? 1 : -1)
 // console.log(newStudent)
 
@@ -18,9 +19,74 @@ const student = studentList.children;
 // based on the number of "students" pulled from above. 
 
 var pages = Math.ceil(student.length / itemsPerPage)
+var searchPages = Math.ceil(searchCounter / itemsPerPage)
 
 //created what will be visible when the page initially loads
 // page gets passed in as 1 when the function is invoked. 
+
+const searchDiv = document.querySelector('.page-header');
+const addDiv = document.createElement('div');
+const input = document.createElement('input');
+const button = document.createElement('button');
+const cancel = document.createElement('button');
+const noResults = document.querySelector('.page-header')
+
+// created buttons and input boxes for the student search.
+
+addDiv.className = 'student-search';
+input.placeholder = "search for student...";
+button.textContent = 'Search';
+cancel.textContent = 'Cancel';
+
+//finished setting up the new buttons and input.
+addDiv.appendChild(input);
+addDiv.appendChild(button);
+addDiv.appendChild(cancel)
+searchDiv.appendChild(addDiv);
+
+
+// created an easy way to "cancel" the search, 
+// but it really just refreshes the page. 
+cancel.addEventListener('click', ()=>{
+   location.reload();
+})
+//created the display for the search results
+// that are entered through the input box. 
+
+button.addEventListener('click', ()=>{
+   var searchQuery = input.value.toLowerCase();
+   for(let i = 0; i < student.length; i++){      
+      if(student[i].innerHTML.indexOf(searchQuery) != -1){
+         student[i].style.display = '';
+      }else {
+         student[i].style.display = 'none';
+         searchCounter += 1;
+      }
+   }
+// added functionality for when the search yields no results
+   if(searchCounter == student.length){
+      noResults.innerHTML = '<h2>No Results Found</h2>'
+      noResults.appendChild(cancel); 
+      for(let i = 1; i <= pages; i++){
+         var newElement = document.getElementById(i);
+         newElement.style.display = "none"
+      }
+
+// attempted to create a setup to adjust which pages are displayed when 
+// searches are done. 
+   }else if(searchCounter != 0){
+      for (let i = 1; i <= pages; i++){
+         if(i <= searchPages){
+            var newElement = document.getElementById(i);
+            newElement.style.display = ""
+         }else {
+            var newElement = document.getElementById(i);
+            newElement.style.display = "none"
+         }
+         }
+      }
+   }
+);
 
 function showPage (page){
    let start = (page * itemsPerPage) - itemsPerPage;
@@ -38,11 +104,13 @@ function showPage (page){
       }else student[i].style.display = 'none';
 
    }
+
 // The below loop is created primarily for styling purposes. 
 // this will loop through all of the page buttons and set 
 // the button to active if it is the one that is selected. 
 // all other buttons will then be set to no longer active. 
 
+ 
    for(let i = 1; i <= pages; i++){
       var newElement = document.getElementById(i);
       newElement.classList.remove('active');
@@ -71,6 +139,7 @@ function appendPageLinks(){
 //created the below loop to create and set list items
 // based on the number of pages needed from the pages variable
 // above.
+
    for (let i = 1; i <= pages; i++){
       let link = document.createElement('a');
       const li = document.createElement('li');
@@ -104,5 +173,7 @@ function appendPageLinks(){
       })
    }
 }
+
+
 appendPageLinks();
 showPage(1);
